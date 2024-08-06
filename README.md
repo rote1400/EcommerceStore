@@ -8,6 +8,7 @@ Welcome to the Full Stack Ecommerce Store, a modern and fully functional ecommer
 - **Prisma**: Modern database toolkit for effortless data management and seamless integration with PostgreSQL.
 - **Stripe**: Secure and reliable payment processing to handle transactions with ease.
 - **Tailwind CSS**: Utility-first CSS framework for rapid UI development and a polished, responsive design.
+- **Shadcn**: Integration for shadow DOM encapsulation, ensuring style isolation and better component reusability.
 - **Admin Dashboard**: Comprehensive admin panel to manage products, orders, and customers with ease.
 - **User Authentication**: Secure user registration and login system with session management.
 - **Product Management**: Add, edit, and delete products with real-time updates.
