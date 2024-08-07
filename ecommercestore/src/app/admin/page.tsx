@@ -8,24 +8,29 @@ import {
 import prisma from "@/db/db";
 
 async function getSalesData() {
-    const data = await prisma.order.aggregate({
-        _sum: { pricePaidInCents: true},
-        _count: true
-    })
+  const data = await prisma.order.aggregate({
+    _sum: { pricePaidInCents: true },
+    _count: true,
+  });
 
-    return {
-        amount: (data._sum.pricePaidInCents || 0) / 100,
-        numberOfSales: data._count
-    }
+  return {
+    amount: (data._sum.pricePaidInCents || 0) / 100,
+    numberOfSales: data._count,
+  };
 }
 
 export default async function AdminDashboard() {
-    const salesData = getSalesData()
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <DashboardCard title="Sales" subtitle="Test" body="body"/>
-        </div>
-    );
+  const salesData = await getSalesData();
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <DashboardCard
+        title="Sales"
+        subtitle={salesData.numberOfSales}
+        body={salesData.amount}
+      />
+    </div>
+  );
 }
 
 type DashboardCardProps = {
