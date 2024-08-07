@@ -28,7 +28,7 @@ async function getUserData() {
     }),
   ]);
 
-  await wait(2000);
+  /* await wait(2000); */
 
   return {
     userCount,
@@ -39,9 +39,9 @@ async function getUserData() {
   };
 }
 
-function wait(duration: number) {
+/* function wait(duration: number) {
   return new Promise((resolve) => setTimeout(resolve, duration));
-}
+} */
 
 async function getProductData() {
   const [activeCount, inactiveCount] = await Promise.all([
