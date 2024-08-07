@@ -28,6 +28,8 @@ async function getUserData() {
     }),
   ]);
 
+  await wait(2000);
+
   return {
     userCount,
     averageValuePerUser:
@@ -35,6 +37,10 @@ async function getUserData() {
         ? 0
         : (orderData._sum.pricePaidInCents || 0) / userCount / 100,
   };
+}
+
+function wait(duration: number) {
+  return new Promise((resolve) => setTimeout(resolve, duration));
 }
 
 async function getProductData() {
@@ -50,7 +56,7 @@ export default async function AdminDashboard() {
   const [salesData, userData, productData] = await Promise.all([
     getSalesData(),
     getUserData(),
-    getProductData()
+    getProductData(),
   ]);
 
   return (
