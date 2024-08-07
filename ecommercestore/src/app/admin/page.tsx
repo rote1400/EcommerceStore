@@ -37,11 +37,21 @@ async function getUserData() {
   };
 }
 
+async function getProductData() {
+  const [activeCount, inactiveCount] = await Promise.all([
+    prisma.product.count({ where: { isAvailableForPurchase: true } }),
+    prisma.product.count({ where: { isAvailableForPurchase: false } }),
+  ]);
+
+  return { activeCount, inactiveCount };
+}
+
 export default async function AdminDashboard() {
-  const [salesData, userData] = await Promise.all([
+  const [salesData, userData, productData] = await Promise.all([
     getSalesData(),
-    getUserData()
-  ])
+    getUserData(),
+    getProductData()
+  ]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -51,9 +61,16 @@ export default async function AdminDashboard() {
         body={formatCurrency(salesData.amount)}
       />
       <DashboardCard
-        title="Customer"
-        subtitle={`${formatCurrency()} Average Value`}
-        body={formatNumber()}
+        title="Customers"
+        subtitle={`${formatCurrency(
+          userData.averageValuePerUser
+        )} Average Value`}
+        body={formatNumber(userData.userCount)}
+      />
+      <DashboardCard
+        title="Active Products"
+        subtitle={`${formatNumber(productData.inactiveCount)} Inactive`}
+        body={formatNumber(productData.activeCount)}
       />
     </div>
   );
