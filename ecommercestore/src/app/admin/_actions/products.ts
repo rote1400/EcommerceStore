@@ -1,6 +1,9 @@
 "use server";
 
+import prisma from "@/db/db";
 import { z } from "zod";
+import fs from "fs/promises";
+import { redirect } from "next/navigation";
 
 const fileSchema = z.instanceof(File, { message: "Required" });
 const imageSchema = fileSchema.refine(
@@ -22,4 +25,27 @@ export async function addProduct(formData: FormData) {
   }
 
   const data = result.data;
+
+  await fs.mkdir("products", { recursive: true });
+  const filePath = `products/${crypto.randomUUID()}-${data.file.name}`;
+  await fs.writeFile(filePath, Buffer.from(await data.file.arrayBuffer()));
+
+  await fs.mkdir("public/products", { recursive: true });
+  const imagePath = `/products/${crypto.randomUUID()}-${data.image.name}`;
+  await fs.writeFile(
+    `public${imagePath}`,
+    Buffer.from(await data.image.arrayBuffer())
+  );
+
+  prisma.product.create({
+    data: {
+      name: data.name,
+      description: data.description,
+      priceInCents: data.priceInCents,
+      filePath,
+      imagePath,
+    },
+  });
+
+  redirect("/admin/products");
 }
