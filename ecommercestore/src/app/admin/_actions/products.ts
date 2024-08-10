@@ -18,6 +18,11 @@ const addSchema = z.object({
   image: imageSchema.refine((file) => file.size > 0, "Required"),
 });
 
+const editSchema = addSchema.extend({
+  file: fileSchema.optional(),
+  image: imageSchema.optional(),
+});
+
 export async function addProduct(prevState: unknown, formData: FormData) {
   const result = addSchema.safeParse(Object.fromEntries(formData.entries()));
   if (result.success === false) {
@@ -51,11 +56,6 @@ export async function addProduct(prevState: unknown, formData: FormData) {
   redirect("/admin/products");
 }
 
-const editSchema = addSchema.extend({
-  file: fileSchema.optional(),
-  image: imageSchema.optional(),
-});
-
 export async function updateProduct(
   id: string,
   prevState: unknown,
@@ -81,14 +81,15 @@ export async function updateProduct(
   let imagePath = product.imagePath;
   if (data.image != null && data.image.size > 0) {
     await fs.unlink(`public${product.imagePath}`);
-    const imagePath = `/products/${crypto.randomUUID()}-${data.image.name}`;
+    imagePath = `/products/${crypto.randomUUID()}-${data.image.name}`;
     await fs.writeFile(
       `public${imagePath}`,
       Buffer.from(await data.image.arrayBuffer())
     );
   }
 
-  await prisma.product.create({
+  await prisma.product.update({
+    where: { id },
     data: {
       isAvailableForPurchase: false,
       name: data.name,
