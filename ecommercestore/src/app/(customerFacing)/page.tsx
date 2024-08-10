@@ -6,12 +6,13 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
-function wait(duration: number) {
-  return new Promise((resolve) => setTimeout(resolve, duration));
-}
+// function wait(duration: number) {
+//   return new Promise((resolve) => setTimeout(resolve, duration));
+// }
 
-async function getMostPopularProducts() {
-  await wait(1000);
+function getMostPopularProducts() {
+// async function getMostPopularProducts() {
+//   await wait(1000);
   return prisma.product.findMany({
     where: { isAvailableForPurchase: true },
     orderBy: { orders: { _count: "desc" } },
@@ -19,8 +20,9 @@ async function getMostPopularProducts() {
   });
 }
 
-async function getNewestProducts() {
-  await wait(2000);
+function getNewestProducts() {
+// async function getNewestProducts() {
+//   await wait(2000);
   return prisma.product.findMany({
     where: { isAvailableForPurchase: true },
     orderBy: { createdAt: "desc" },
