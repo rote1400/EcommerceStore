@@ -134,15 +134,14 @@ function Form({
       .confirmPayment({
         elements,
         confirmParams: {
-          return_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/stripe/
-            payment-success`,
+          return_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/stripe/purchase-success`,
         },
       })
       .then(({ error }) => {
         if (error.type === "card_error" || error.type === "validation_error") {
           setErrorMessage(error.message);
         } else {
-          setErrorMessage("An unknown error occurred!");
+          setErrorMessage(error.message);
         }
       })
       .finally(() => setIsLoading(false));
