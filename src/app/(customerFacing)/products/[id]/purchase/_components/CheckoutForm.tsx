@@ -1,5 +1,14 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { formatCurrency } from "@/lib/formatters";
 import {
   Elements,
@@ -9,6 +18,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import Image from "next/image";
+import { FormEvent, useState } from "react";
 
 type CheckoutFormProps = {
   product: {
@@ -80,15 +90,47 @@ export function CheckoutForm({ product, clientSecret }: CheckoutFormProps) {
           },
         }}
       >
-        <Form />
+        <Form priceInCents={product.priceInCents} />
       </Elements>
     </div>
   );
 }
 
-function Form() {
+function Form({ priceInCents }: { priceInCents: number }) {
   const stripe = useStripe();
   const elements = useElements();
+  const [isLoading, setIsLoading] = useState(false);
 
-  return <PaymentElement />;
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+
+    if (stripe == null || elements == null) return;
+
+    setIsLoading(true);
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <Card>
+        <CardHeader>
+          <CardTitle>Checkout</CardTitle>
+          <CardDescription className="text-destructive">Error</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <PaymentElement />
+        </CardContent>
+        <CardFooter>
+          <Button
+            className="w-full"
+            size="lg"
+            disabled={stripe == null || elements == null || isLoading}
+          >
+            {isLoading
+              ? "Purchasing..."
+              : `Purchase - ${formatCurrency(priceInCents / 100)}`}
+          </Button>
+        </CardFooter>
+      </Card>
+    </form>
+  );
 }
