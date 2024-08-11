@@ -1,13 +1,14 @@
 import { ProductCard, ProductCardSkeleton } from "@/components/ProductCard";
 import prisma from "@/db/db";
+import { cache } from "@/lib/cache";
 import { Suspense } from "react";
 
-function getProducts() {
+const getProducts = cache(() => {
   return prisma.product.findMany({
     where: { isAvailableForPurchase: true },
     orderBy: { name: "asc" },
   });
-}
+}, ["/products", "getProducts"])
 
 export default function ProductsPage() {
   return (
