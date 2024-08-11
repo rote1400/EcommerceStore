@@ -117,7 +117,7 @@ export async function toggleProductAvailability(
     where: { id },
     data: { isAvailableForPurchase },
   });
-  
+
   revalidatePath("/");
   revalidatePath("/products");
 }
@@ -129,4 +129,7 @@ export async function deleteProduct(id: string) {
 
   await fs.unlink(product.filePath);
   await fs.unlink(`public${product.imagePath}`);
+
+  revalidatePath("/");
+  revalidatePath("/products");
 }
