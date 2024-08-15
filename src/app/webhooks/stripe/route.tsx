@@ -54,4 +54,6 @@ export async function POST(req: NextRequest) {
       react: <h1>Hi</h1>,
     });
   }
+
+  return new NextResponse();
 }
