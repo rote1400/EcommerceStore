@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   ActiveToggleDropdownItem,
-  DeleteDropdownItem,
+  DeleteDropDownItem,
 } from "./_components/ProductActions";
 
 export default function AdminProductsPage() {
@@ -107,7 +107,7 @@ async function ProductsTable() {
                     isAvailableForPurchase={product.isAvailableForPurchase}
                   />
                   <DropdownMenuSeparator />
-                  <DeleteDropdownItem
+                  <DeleteDropDownItem
                     id={product.id}
                     disabled={product._count.orders > 0}
                   />
