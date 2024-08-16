@@ -32,9 +32,14 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Second, run Stripe serve the transactions of the payments:
+Second, run Stripe server in new Terminal, for the transactions of the payments:
 
 ```bash
 .././stripe listen --forward-to localhost:3000/webhooks/stripe
 
 Using Resend as email service for sending confirmation emails.
+
+Third, run Email server in new Terminal, for developing purposes:
+
+```bash
+npm run email
