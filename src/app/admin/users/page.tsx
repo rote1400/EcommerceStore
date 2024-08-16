@@ -17,9 +17,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  DeleteDropDownItem,
-} from "./_components/UserActions";
+import { DeleteDropDownItem } from "./_components/UserActions";
 
 function getUsers() {
   return prisma.user.findMany({
