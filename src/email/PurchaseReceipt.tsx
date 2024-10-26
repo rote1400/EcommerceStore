@@ -12,6 +12,7 @@ import { OrderInformation } from "./components/OrderInformation";
 type PurchaseReceiptEmailProps = {
   product: {
     name: string;
+    description: string;
     imagePath: string;
   };
   order: { id: string; createdAt: Date; pricePaidInCents: number };
@@ -21,6 +22,7 @@ type PurchaseReceiptEmailProps = {
 PurchaseReceiptEmail.PreviewProps = {
   product: {
     name: "Product name",
+    description: "Some description",
     imagePath: "/products/88bd13dd-f18d-4467-ac6d-da0b38d8a3e8-bl14.png",
   },
   order: {
